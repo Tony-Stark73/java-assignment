@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class StockApiService {
 
@@ -46,7 +49,26 @@ public class StockApiService {
         return null;
     }
 
-    // 3️⃣ Final helper → Enter company name & get stock price
+    // 3️⃣ Final helper → Enter company name & get symbol + price + name as a Map
+    public Map<String, Object> getStockInfoByCompany(String companyName) {
+        String symbol = searchSymbol(companyName);
+        if (symbol == null) {
+            return null;
+        }
+
+        Double price = getPrice(symbol);
+        if (price == null) {
+            return null;
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("symbol", symbol);
+        data.put("price", price);
+        data.put("companyName", companyName);
+        return data;
+    }
+
+    // (You can keep this if you still want it somewhere else)
     public Double getPriceByCompany(String companyName) {
         String symbol = searchSymbol(companyName);
 

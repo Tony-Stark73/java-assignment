@@ -1,5 +1,8 @@
 package portfolio.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,9 @@ public class StockController {
 
     @Autowired
     private StockApiService stockApiService;
+
+    // Just use a local ObjectMapper instead of autowiring a bean
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Single endpoint:
     // - /api/stocks/price?symbol=TSLA
@@ -60,6 +66,81 @@ public class StockController {
         } catch (Exception e) {
             response.put("error", "An error occurred: " + e.getMessage());
             return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    // /api/stocks/timeSeries
+    // - /api/stocks/timeSeries?symbol=TSLA&interval=1h
+    // - /api/stocks/timeSeries?name=Apple&interval=1day
+    // Optional: &startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+    @GetMapping("/timeSeries")
+    public ResponseEntity<JsonNode> getTimeSeries(
+            @RequestParam(required = false) String symbol,
+            @RequestParam(required = false, name = "name") String companyName,
+            @RequestParam(defaultValue = "1h") String interval,
+            @RequestParam(required = false, name = "startDate") String startDate,
+            @RequestParam(required = false, name = "endDate") String endDate
+    ) {
+        try {
+            String finalSymbol = null;
+            String finalCompanyName = null;
+
+            // Case 1: symbol directly
+            if (symbol != null && !symbol.isBlank()) {
+                finalSymbol = symbol;
+            }
+            // Case 2: lookup symbol by company name
+            else if (companyName != null && !companyName.isBlank()) {
+                finalCompanyName = companyName;
+                finalSymbol = stockApiService.searchSymbol(companyName);
+
+                if (finalSymbol == null) {
+                    ObjectNode error = objectMapper.createObjectNode();
+                    error.put("error", "Company not found: " + companyName);
+                    return ResponseEntity.status(404).body(error);
+                }
+            } else {
+                ObjectNode error = objectMapper.createObjectNode();
+                error.put("error", "Either 'symbol' or 'name' query parameter is required.");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            JsonNode timeSeries = stockApiService.getTimeSeries(finalSymbol, interval, startDate, endDate);
+
+            if (timeSeries == null) {
+                ObjectNode error = objectMapper.createObjectNode();
+                error.put("error", "Time series data not available for symbol: " + finalSymbol);
+                return ResponseEntity.status(404).body(error);
+            }
+
+            // Build final JSON response
+            ObjectNode result = objectMapper.createObjectNode();
+            result.put("symbol", finalSymbol);
+            result.put("interval", interval);
+
+            if (finalCompanyName != null) {
+                result.put("companyName", finalCompanyName);
+            }
+            if (startDate != null && !startDate.isBlank()) {
+                result.put("startDate", startDate);
+            }
+            if (endDate != null && !endDate.isBlank()) {
+                result.put("endDate", endDate);
+            }
+
+            // Attach actual values array if present, else full data
+            if (timeSeries.has("values")) {
+                result.set("values", timeSeries.get("values"));
+            } else {
+                result.set("data", timeSeries);
+            }
+
+            return ResponseEntity.ok(result);
+
+        } catch (Exception e) {
+            ObjectNode error = objectMapper.createObjectNode();
+            error.put("error", "An error occurred: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
         }
     }
 }

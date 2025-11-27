@@ -68,7 +68,7 @@ public class StockApiService {
         return data;
     }
 
-    // (You can keep this if you still want it somewhere else)
+    // (Optional helper, keep if you use elsewhere)
     public Double getPriceByCompany(String companyName) {
         String symbol = searchSymbol(companyName);
 
@@ -78,5 +78,39 @@ public class StockApiService {
         }
 
         return getPrice(symbol);
+    }
+
+    // 4️⃣ Time series helper → get OHLC data for a symbol over a period
+    // interval example: 1min, 5min, 15min, 1h, 1day, 1week, 1month
+    // dates should be in format YYYY-MM-DD (as per Twelve Data docs)
+    public JsonNode getTimeSeries(String symbol, String interval, String startDate, String endDate) {
+        StringBuilder urlBuilder = new StringBuilder(
+                BASE_URL + "time_series?symbol=" + symbol + "&interval=" + interval + "&apikey=" + API_KEY
+        );
+
+        if (startDate != null && !startDate.isBlank()) {
+            urlBuilder.append("&start_date=").append(startDate);
+        }
+        if (endDate != null && !endDate.isBlank()) {
+            urlBuilder.append("&end_date=").append(endDate);
+        }
+
+        try {
+            String jsonResponse = restTemplate.getForObject(urlBuilder.toString(), String.class);
+            System.out.println("Raw time_series response: " + jsonResponse);
+            JsonNode root = objectMapper.readTree(jsonResponse);
+        
+
+            // Basic error check according to typical Twelve Data responses
+            if (root.has("status") && "error".equalsIgnoreCase(root.get("status").asText())) {
+                return null;
+            }
+
+            return root;
+        } catch (Exception e) {
+            System.out.println("Error fetching time series: " + e.getMessage());
+        }
+
+        return null;
     }
 }

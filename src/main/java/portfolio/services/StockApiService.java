@@ -2,6 +2,7 @@ package portfolio.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,7 +12,8 @@ import java.util.Map;
 @Service
 public class StockApiService {
 
-    private static final String API_KEY = "78daefaaa97b444a8c68e6973f5c9136";
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String API_KEY = dotenv.get("TWELVE_DATA_API_KEY");
     private static final String BASE_URL = "https://api.twelvedata.com/";
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -99,7 +101,6 @@ public class StockApiService {
             String jsonResponse = restTemplate.getForObject(urlBuilder.toString(), String.class);
             System.out.println("Raw time_series response: " + jsonResponse);
             JsonNode root = objectMapper.readTree(jsonResponse);
-        
 
             // Basic error check according to typical Twelve Data responses
             if (root.has("status") && "error".equalsIgnoreCase(root.get("status").asText())) {

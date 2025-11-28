@@ -1,32 +1,31 @@
-
 package portfolio.storage;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import portfolio.models.Stock;
+import portfolio.models.PortfolioData;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JsonStorage {
 
     private static final String FILE_PATH = "src/main/resources/portfolio.json";
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static List<Stock> loadStocks() {
+    public static PortfolioData loadData() {
         try {
             File file = new File(FILE_PATH);
-            if (!file.exists()) return new ArrayList<>();
-            return mapper.readValue(file, new TypeReference<List<Stock>>() {});
+            if (!file.exists()) {
+                return new PortfolioData(); // empty structure
+            }
+            return mapper.readValue(file, PortfolioData.class);
         } catch (Exception e) {
-            return new ArrayList<>();
+            return new PortfolioData();
         }
     }
 
-    public static void saveStocks(List<Stock> stocks) {
+    public static void saveData(PortfolioData data) {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), stocks);
-        } catch (Exception ignored) {}
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), data);
+        } catch (Exception ignored) {
+        }
     }
 }

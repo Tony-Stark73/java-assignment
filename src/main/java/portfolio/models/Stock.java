@@ -2,42 +2,61 @@ package portfolio.models;
 
 public class Stock {
 
-    private String symbol;
-    private int quantity;
-    private double buyPrice;
+    // “Share” in the SRS
+    private int shareId;
+    private int portfolioId;
+    private String company;
+    private int amount;          // number of units
+    private String marketValue;  // e.g. "160$" as in SRS
 
     public Stock() {
     }
 
-    ;
-
-    public Stock(String symbol, int quantity, double buyPrice) {
-        this.symbol = symbol;
-        this.quantity = quantity;
-        this.buyPrice = buyPrice;
+    public Stock(int shareId, int portfolioId, String company, int amount, String marketValue) {
+        this.shareId = shareId;
+        this.portfolioId = portfolioId;
+        this.company = company;
+        this.amount = amount;
+        this.marketValue = marketValue;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public int getShareId() {
+        return shareId;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public void setShareId(int shareId) {
+        this.shareId = shareId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getPortfolioId() {
+        return portfolioId;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setPortfolioId(int portfolioId) {
+        this.portfolioId = portfolioId;
     }
 
-    public double getBuyPrice() {
-        return buyPrice;
-
+    public String getCompany() {
+        return company;
     }
-    public void setBuyPrice(double buyPrice) {
-        this.buyPrice = buyPrice;
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getMarketValue() {
+        return marketValue;
+    }
+
+    public void setMarketValue(String marketValue) {
+        this.marketValue = marketValue;
     }
 }

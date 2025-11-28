@@ -74,7 +74,7 @@ public class StockController {
     // - /api/stocks/timeSeries?name=Apple&interval=1day
     // Optional: &startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
     @GetMapping("/timeSeries")
-    public ResponseEntity<JsonNode> getTimeSeries(
+    public ResponseEntity<Map<String, Object>> getTimeSeries(
             @RequestParam(required = false) String symbol,
             @RequestParam(required = false, name = "name") String companyName,
             @RequestParam(defaultValue = "1h") String interval,
@@ -95,12 +95,12 @@ public class StockController {
                 finalSymbol = stockApiService.searchSymbol(companyName);
 
                 if (finalSymbol == null) {
-                    ObjectNode error = objectMapper.createObjectNode();
+                    Map<String, Object> error = new HashMap<>();
                     error.put("error", "Company not found: " + companyName);
                     return ResponseEntity.status(404).body(error);
                 }
             } else {
-                ObjectNode error = objectMapper.createObjectNode();
+                Map<String, Object> error = new HashMap<>();
                 error.put("error", "Either 'symbol' or 'name' query parameter is required.");
                 return ResponseEntity.badRequest().body(error);
             }
@@ -108,13 +108,13 @@ public class StockController {
             JsonNode timeSeries = stockApiService.getTimeSeries(finalSymbol, interval, startDate, endDate);
 
             if (timeSeries == null) {
-                ObjectNode error = objectMapper.createObjectNode();
+                Map<String, Object> error = new HashMap<>();
                 error.put("error", "Time series data not available for symbol: " + finalSymbol);
                 return ResponseEntity.status(404).body(error);
             }
 
-            // Build final JSON response
-            ObjectNode result = objectMapper.createObjectNode();
+            // Build final response as a Map
+            Map<String, Object> result = new HashMap<>();
             result.put("symbol", finalSymbol);
             result.put("interval", interval);
 
@@ -128,17 +128,17 @@ public class StockController {
                 result.put("endDate", endDate);
             }
 
-            // Attach actual values array if present, else full data
+            // Convert JsonNode to Map/Object for proper serialization
             if (timeSeries.has("values")) {
-                result.set("values", timeSeries.get("values"));
+                result.put("values", objectMapper.convertValue(timeSeries.get("values"), Object.class));
             } else {
-                result.set("data", timeSeries);
+                result.put("data", objectMapper.convertValue(timeSeries, Object.class));
             }
 
             return ResponseEntity.ok(result);
 
         } catch (Exception e) {
-            ObjectNode error = objectMapper.createObjectNode();
+            Map<String, Object> error = new HashMap<>();
             error.put("error", "An error occurred: " + e.getMessage());
             return ResponseEntity.status(500).body(error);
         }

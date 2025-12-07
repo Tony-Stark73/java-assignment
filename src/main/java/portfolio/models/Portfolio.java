@@ -1,31 +1,18 @@
 package portfolio.models;
 
-public class Stock {
+public class Portfolio {
 
-    // “Share” in the SRS
-    private int shareId;
     private int portfolioId;
-    private String company;
-    private int amount;          // number of units
-    private String marketValue;  // e.g. "160$" as in SRS
+    private String portfolioName;
+    private int userId;   // owner
 
-    public Stock() {
+    public Portfolio() {
     }
 
-    public Stock(int shareId, int portfolioId, String company, int amount, String marketValue) {
-        this.shareId = shareId;
+    public Portfolio(int portfolioId, String portfolioName, int userId) {
         this.portfolioId = portfolioId;
-        this.company = company;
-        this.amount = amount;
-        this.marketValue = marketValue;
-    }
-
-    public int getShareId() {
-        return shareId;
-    }
-
-    public void setShareId(int shareId) {
-        this.shareId = shareId;
+        this.portfolioName = portfolioName;
+        this.userId = userId;
     }
 
     public int getPortfolioId() {
@@ -36,27 +23,19 @@ public class Stock {
         this.portfolioId = portfolioId;
     }
 
-    public String getCompany() {
-        return company;
+    public String getPortfolioName() {
+        return portfolioName;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setPortfolioName(String portfolioName) {
+        this.portfolioName = portfolioName;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getMarketValue() {
-        return marketValue;
-    }
-
-    public void setMarketValue(String marketValue) {
-        this.marketValue = marketValue;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

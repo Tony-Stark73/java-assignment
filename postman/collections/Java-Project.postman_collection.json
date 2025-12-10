@@ -1,0 +1,356 @@
+{
+  "info": {
+    "_postman_id": "a578ee62-4cdf-4c81-a14e-299206a6bb27",
+    "name": "Java-Project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "stock",
+      "id": "1a3c460b-95a1-43a5-a78e-1a687fe22a6e",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/stocks/price?symbol=TSLA",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stocks",
+            "price"
+          ],
+          "query": [
+            {
+              "key": "symbol",
+              "value": "TSLA"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "stock-name",
+      "id": "fc4ba856-03e0-4a61-8266-0e534799c21a",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/stocks/price?name=Tesla",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stocks",
+            "price"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "Tesla"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "time-series",
+      "id": "0cfc6cd8-1e99-4d9e-acbf-87e1d2e16d62",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/stocks/timeSeries?symbol=AAPL&interval=1day",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stocks",
+            "timeSeries"
+          ],
+          "query": [
+            {
+              "key": "symbol",
+              "value": "AAPL"
+            },
+            {
+              "key": "interval",
+              "value": "1day"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "time-series-name",
+      "id": "882fdbd6-4d80-44b8-a097-13f96b433ec0",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/stocks/timeSeries?name=apple&interval=1day",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stocks",
+            "timeSeries"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "apple"
+            },
+            {
+              "key": "interval",
+              "value": "1day"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create User",
+      "id": "fc1f1033-bd8e-4ab3-9c98-59de796ae76e",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"userName\": \"chris\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/user",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all users",
+      "id": "58f41cbf-7fa3-4bac-aa52-a7cc8664d6f7",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/users",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get particular user",
+      "id": "11f0aa07-87c6-40bd-b0b8-f9e614644014",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/user/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create portfolio",
+      "id": "ebbf025f-5b02-4940-b7a6-9712472e2b8e",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"userId\": \"1\",\r\n    \"portfolioName\": \"Low risk\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/portfolio",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "portfolio"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all portfoios under user",
+      "id": "7698a682-6895-49fe-9d2c-20b943c9539f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/user/1/portfolios",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1",
+            "portfolios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "portfolioDetails",
+      "id": "0a2f6690-7d73-4d53-9a35-dbbbb028806b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/user/1/portfolio/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1",
+            "portfolio",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "add trades under portfolio",
+      "id": "b0b5258e-5e0d-4698-b9a4-ff3276c95547",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"company\": \"AAPL\",\r\n    \"amount\": \"5\",\r\n    \"marketValue\": \"260$\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/user/1/portfolio/1/add",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1",
+            "portfolio",
+            "1",
+            "add"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete trade",
+      "id": "57b2ec77-8927-4963-ac5c-a040e1313a70",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/user/1/portfolio/1/delete?shareId=1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1",
+            "portfolio",
+            "1",
+            "delete"
+          ],
+          "query": [
+            {
+              "key": "shareId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "profit for a portfolio",
+      "id": "0c6afd5c-5ebe-42de-8252-3c0a015560d3",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/user/1/portfolio/1/profits",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "user",
+            "1",
+            "portfolio",
+            "1",
+            "profits"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
